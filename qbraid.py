@@ -126,7 +126,11 @@ def update_chat_display(prompt, response):
     try:
         chat_display.config(state=tk.NORMAL)
         chat_display.insert(tk.END, f"\nYou: {prompt}\n")
-        chat_display.insert(tk.END, f"Assistant: {response['response']}\n")
+        
+        # Extract and display only the "content" part of the response
+        content = response.get("content", "No response content available.")
+        chat_display.insert(tk.END, f"Assistant: {content}\n")
+        
         chat_display.see(tk.END)
         chat_display.config(state=tk.DISABLED)
         prompt_entry.delete(0, tk.END)
@@ -134,6 +138,7 @@ def update_chat_display(prompt, response):
     except Exception as e:
         error_msg = f"Error updating chat display: {str(e)}"
         logging.error(error_msg)
+
 
 def on_closing():
     """Handle application closing"""
