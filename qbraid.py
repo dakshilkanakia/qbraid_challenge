@@ -56,20 +56,23 @@ def validate_api_key(event=None):
         status_label.config(text="Invalid API key format. Must be 30 characters.")
 
 def fetch_models():
-    """Fetch available models from qBraid API"""
+    """Fetch available models from qBraid API and update the dropdown with model names"""
     try:
         url = "https://api.qbraid.com/api/chat/models"
         headers = {"api-key": api_key}
-        
+
         logging.info("Fetching available models")
         response = requests.get(url, headers=headers)
-        
+
         if response.status_code == 200:
-            models = response.json()
-            logging.info(f"Successfully fetched {len(models)} models")
-            model_dropdown['values'] = models
-            if models:
-                model_dropdown.set(models[0])
+            models_data = response.json()
+            model_names = [model["model"] for model in models_data]  # Extract only model names
+
+            logging.info(f"Successfully fetched {len(model_names)} models")
+            model_dropdown['values'] = model_names
+            if model_names:
+                model_dropdown.set(model_names[0])  # Set the first model as default
+            
             chat_frame.grid()
             status_label.config(text="API Key validated successfully!")
         else:
@@ -82,6 +85,7 @@ def fetch_models():
         logging.error(error_msg)
         status_label.config(text=f"Error: {str(e)}")
         chat_frame.grid_remove()
+
 
 def submit_prompt():
     """Submit prompt to qBraid API"""
