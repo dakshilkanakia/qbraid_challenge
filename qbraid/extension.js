@@ -148,74 +148,190 @@ function getWebviewContent(webview) {
                 padding: 20px;
                 font-family: var(--vscode-font-family);
                 color: var(--vscode-foreground);
+                max-width: 1200px;
+                margin: 0 auto;
+                line-height: 1.5;
             }
+
+            /* Container styles */
+            .container {
+                background: var(--vscode-editor-background);
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            /* Section styles */
             #apiKeySection, #chatSection {
-                margin-bottom: 20px;
+                margin-bottom: 24px;
+                padding: 16px;
+                border-radius: 6px;
+                background: var(--vscode-editor-background);
+                border: 1px solid var(--vscode-input-border);
             }
-            #chatSection {
-                display: none;
+
+            /* Form elements */
+            .input-group {
+                margin-bottom: 16px;
             }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: var(--vscode-foreground);
+                font-weight: 500;
+            }
+
             input, select {
-                margin: 5px 0;
-                padding: 5px;
-                width: 300px;
+                width: 100%;
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-radius: 4px;
                 background: var(--vscode-input-background);
                 color: var(--vscode-input-foreground);
                 border: 1px solid var(--vscode-input-border);
+                font-size: 14px;
             }
+
+            input:focus, select:focus {
+                outline: none;
+                border-color: var(--vscode-focusBorder);
+            }
+
+            /* Button styles */
             button {
-                padding: 5px 10px;
-                margin-left: 5px;
+                padding: 8px 16px;
                 background: var(--vscode-button-background);
                 color: var(--vscode-button-foreground);
                 border: none;
-                cursor: pointer;
-            }
-            #chatDisplay {
-                height: 400px;
-                overflow-y: auto;
-                border: 1px solid var(--vscode-input-border);
-                margin: 10px 0;
-                padding: 10px;
-                background: var(--vscode-input-background);
-            }
-            .message {
-                margin: 10px 0;
-                padding: 8px;
                 border-radius: 4px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: background-color 0.2s;
             }
-            .user-message {
+
+            button:hover {
+                background: var(--vscode-button-hoverBackground);
+            }
+
+            /* Chat interface */
+            .chat-container {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .input-container {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                padding: 12px;
                 background: var(--vscode-editor-background);
+                border-radius: 6px;
+                border: 1px solid var(--vscode-input-border);
             }
+
+            #modelSelect {
+                width: 200px;
+                flex-shrink: 0;
+            }
+
+            #promptInput {
+                flex-grow: 1;
+            }
+
+            /* Chat display */
+            #chatDisplay {
+                height: 500px;
+                overflow-y: auto;
+                padding: 16px;
+                border-radius: 6px;
+                background: var(--vscode-editor-background);
+                border: 1px solid var(--vscode-input-border);
+            }
+
+            /* Message styles */
+            .message {
+                margin: 12px 0;
+                padding: 12px 16px;
+                border-radius: 6px;
+                max-width: 85%;
+                position: relative;
+            }
+
+            .user-message {
+                background: var(--vscode-button-background);
+                color: var(--vscode-button-foreground);
+                margin-left: auto;
+            }
+
             .assistant-message {
                 background: var(--vscode-editor-selectionBackground);
+                margin-right: auto;
             }
+
+            /* Error messages */
             .error {
                 color: var(--vscode-errorForeground);
                 background: var(--vscode-inputValidation-errorBackground);
-                padding: 8px;
-                margin: 5px 0;
+                padding: 12px;
+                margin: 8px 0;
                 border-radius: 4px;
+                border-left: 4px solid var(--vscode-errorForeground);
+            }
+
+            /* Status messages */
+            #apiKeyStatus {
+                margin-top: 8px;
+                padding: 8px;
+                border-radius: 4px;
+            }
+
+            /* Scrollbar styling */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--vscode-scrollbarSlider-background);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--vscode-scrollbarSlider-hoverBackground);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--vscode-scrollbarSlider-activeBackground);
             }
         </style>
     </head>
     <body>
-        <div id="apiKeySection">
-            <label for="apiKey">API Key:</label>
-            <input type="text" id="apiKey" placeholder="Enter your 30-character API key" />
-            <div id="apiKeyStatus"></div>
-        </div>
-        
-        <div id="chatSection">
-            <div style="display: flex; align-items: center;">
-                <select id="modelSelect"></select>
-                <input type="text" id="promptInput" placeholder="Enter your prompt..." style="flex-grow: 1; margin: 0 10px;" />
-                <button onclick="sendPrompt()">Send</button>
+        <div class="container">
+            <div id="apiKeySection">
+                <div class="input-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter your 30-character API key" maxlength="30" />
+                    <div id="apiKeyStatus"></div>
+                </div>
             </div>
-            <div id="chatDisplay"></div>
+            
+            <div id="chatSection">
+                <div class="chat-container">
+                    <div class="input-container">
+                        <select id="modelSelect"></select>
+                        <input type="text" id="promptInput" placeholder="Type your message here..." />
+                        <button onclick="sendPrompt()">Send</button>
+                    </div>
+                    <div id="chatDisplay"></div>
+                </div>
+            </div>
         </div>
 
         <script>
+            // JavaScript remains the same as in your current version
             const vscode = acquireVsCodeApi();
             
             document.getElementById('apiKey').addEventListener('input', (e) => {
@@ -286,14 +402,3 @@ function getWebviewContent(webview) {
     </body>
     </html>`;
 }
-
-function deactivate() {
-    if (currentPanel) {
-        currentPanel.dispose();
-    }
-}
-
-module.exports = {
-    activate,
-    deactivate
-};
