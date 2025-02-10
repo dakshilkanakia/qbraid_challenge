@@ -6,6 +6,7 @@ from threading import Thread
 import logging
 import os
 from datetime import datetime
+from security import safe_requests
 
 # Global variables
 api_key = None
@@ -38,7 +39,7 @@ def fetch_models():
         headers = {"api-key": api_key}
 
         logging.info("Fetching available models")
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
 
         if response.status_code == 200:
             models_data = response.json()
