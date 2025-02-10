@@ -7,29 +7,6 @@ import logging
 import os
 from datetime import datetime
 
-# Set up logging
-def setup_logging():
-    """Configure logging settings"""
-    # Create logs directory if it doesn't exist
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    
-    # Create log filename with timestamp
-    log_filename = f'logs/qbraid_chat_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'
-    
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s [%(levelname)s] - %(message)s',
-        handlers=[
-            logging.FileHandler(log_filename),
-            logging.StreamHandler()
-        ]
-    )
-    
-    logging.info("Application started")
-    return log_filename
-
 # Global variables
 api_key = None
 root = None
@@ -38,7 +15,6 @@ status_label = None
 chat_display = None
 prompt_entry = None
 model_dropdown = None
-log_filename = setup_logging()
 
 def validate_api_key(event=None):
     """Validate API key format and fetch models if valid"""
@@ -195,9 +171,6 @@ chat_display.config(state=tk.DISABLED)
 status_label = ttk.Label(main_frame, text="")
 status_label.grid(row=3, column=0, pady=5)
 
-# Add log file location label
-log_label = ttk.Label(main_frame, text=f"Log file: {log_filename}")
-log_label.grid(row=4, column=0, pady=5)
 
 if __name__ == "__main__":
     logging.info("Starting main application loop")
