@@ -1,0 +1,51 @@
+{
+    "name": "qbraid-chat",
+    "displayName": "qBraid Chat",
+    "description": "Chat with qBraid AI models directly in VS Code",
+    "version": "0.1.0",
+    "publisher": "qbraid",
+    "private": true,
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/qbraid/vscode-qbraid-chat"
+    },
+    "engines": {
+      "vscode": "^1.85.0"
+    },
+    "categories": [
+      "Other"
+    ],
+    "activationEvents": ["onCommand:qbraid-chat.openChat"],
+    "main": "./extension.js",
+    "contributes": {
+      "commands": [
+        {
+          "command": "qbraid-chat.openChat",
+          "title": "Open qBraid Chat"
+        }
+      ],
+      "configuration": {
+        "title": "qBraid Chat",
+        "properties": {
+          "qbraidChat.apiKey": {
+            "type": "string",
+            "default": "",
+            "description": "API Key for qBraid services"
+          }
+        }
+      }
+    },
+    "scripts": {
+      "vsce:package": "vsce package"
+    },
+    "devDependencies": {
+      "@types/node": "^16.0.0",
+      "@types/vscode": "^1.85.0",
+      "@vscode/vsce": "^2.24.0"
+    },
+    "dependencies": {
+      "axios": "^1.6.2"
+    }
+  }
+  

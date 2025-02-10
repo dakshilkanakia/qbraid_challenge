@@ -119,3 +119,6 @@ logs/
 
 # VS Code
 .vscode/
+
+# node modules
+qbraid/node_modules/
