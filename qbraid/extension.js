@@ -402,3 +402,5 @@ function getWebviewContent(webview) {
     </body>
     </html>`;
 }
+
+module.exports = {activate};
