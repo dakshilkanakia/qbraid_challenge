@@ -38,7 +38,7 @@ def fetch_models():
         headers = {"api-key": api_key}
 
         logging.info("Fetching available models")
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
 
         if response.status_code == 200:
             models_data = response.json()
@@ -86,7 +86,7 @@ def send_chat_request(prompt):
         
         logging.info("Sending chat request to API")
         status_label.config(text="Sending request...")
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=60)
         
         if response.status_code == 200:
             logging.info("Successfully received chat response")
